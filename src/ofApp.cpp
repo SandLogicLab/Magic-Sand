@@ -58,6 +58,11 @@ void ofApp::setup() {
 	boidGameController.setKinectRes(kinectRes);
 	boidGameController.setKinectROI(kinectROI);
 
+	treasureSweeperController.setup(kinectProjector);
+	treasureSweeperController.setProjectorRes(projRes);
+	treasureSweeperController.setKinectRes(kinectRes);
+	treasureSweeperController.setKinectROI(kinectROI);
+
 }
 
 
@@ -72,10 +77,12 @@ void ofApp::update() {
 		ofRectangle kinectROI = kinectProjector->getKinectROI();
 		mapGameController.setKinectROI(kinectROI);
 		boidGameController.setKinectROI(kinectROI);
+		treasureSweeperController.setKinectROI(kinectROI);
 	}
 
 	mapGameController.update();
 	boidGameController.update();
+	treasureSweeperController.update();
 }
 
 
@@ -90,6 +97,7 @@ void ofApp::draw()
 	{
 		sandSurfaceRenderer->drawMainWindow(x, y, w, h);//400, 20, 400, 300);
 		boidGameController.drawMainWindow(x, y, w, h);
+		treasureSweeperController.drawMainWindow(x, y, w, h);
 	}
 
 	kinectProjector->drawMainWindow(x, y, w, h);
@@ -102,12 +110,24 @@ void ofApp::drawProjWindow(ofEventArgs &args)
 		sandSurfaceRenderer->drawProjectorWindow();
 		mapGameController.drawProjectorWindow();
 		boidGameController.drawProjectorWindow();
+		treasureSweeperController.drawProjectorWindow();
 	}
 	kinectProjector->drawProjectorWindow();
 }
 
 void ofApp::keyPressed(int key) 
 {
+	if (key == 'T')
+	{
+		treasureSweeperController.toggleActive();
+		return;
+	}
+
+	if (treasureSweeperController.keyPressed(key))
+	{
+		return;
+	}
+
 	if (key == 'c')
 	{
 		kinectProjector->SaveKinectColorImage();
@@ -251,4 +271,3 @@ void ofApp::gotMessage(ofMessage msg) {
 void ofApp::dragEvent(ofDragInfo dragInfo) {
 
 }
-
