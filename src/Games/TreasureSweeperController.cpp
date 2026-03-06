@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <cctype>
 #include <limits>
 #include <random>
 
@@ -27,6 +28,7 @@ namespace
 	const float REVEAL_SECONDS_WIN = 3.0f;
 	const int CELL_SAMPLE_STEP = 4;
 	const float FALLBACK_THRESHOLD_SCALE = 0.07f;
+	const int CHEAT_TOGGLE_KEY = "y"[0];
 
 	int clampi(int value, int low, int high)
 	{
@@ -46,6 +48,7 @@ CTreasureSweeperController::CTreasureSweeperController()
 	, digsUsed(0)
 	, adaptiveDropThreshold(DIG_DROP_THRESHOLD)
 	, revealMines(false)
+	, cheatRevealAll(false)
 {
 }
 
@@ -102,6 +105,12 @@ bool CTreasureSweeperController::keyPressed(int key)
 	{
 		resetRound();
 		lastMessage = "Round reset.";
+		return true;
+	}
+	if (key == CHEAT_TOGGLE_KEY || key == std::toupper(CHEAT_TOGGLE_KEY))
+	{
+		cheatRevealAll = !cheatRevealAll;
+		lastMessage = cheatRevealAll ? "Cheat reveal ON" : "Cheat reveal OFF";
 		return true;
 	}
 	return false;
@@ -515,10 +524,10 @@ void CTreasureSweeperController::drawProjectorWindow()
 		drawCellMark(indexToCell(it->first), it->second, false);
 	}
 
-	if (roundState != ROUND_PLAYING)
+	if (roundState != ROUND_PLAYING || cheatRevealAll)
 	{
 		drawCellMark(treasureCell, "treasure", true);
-		if (revealMines)
+		if (revealMines || cheatRevealAll)
 		{
 			for (std::set<int>::const_iterator it = mineCellIndices.begin(); it != mineCellIndices.end(); ++it)
 			{
@@ -549,7 +558,7 @@ void CTreasureSweeperController::drawProjectorWindow()
 	else
 	{
 		ofSetColor(230);
-		ofDrawBitmapString("Press R to reset round", 35, 145);
+		ofDrawBitmapString("Press R to reset round | Press Y to toggle cheat reveal", 35, 145);
 	}
 	ofPopStyle();
 }

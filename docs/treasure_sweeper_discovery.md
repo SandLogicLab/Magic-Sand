@@ -7,3 +7,5 @@
 - **Height units:** elevation values are produced via `KinectProjector::elevationAtKinectCoord()` in `src/KinectProjector/KinectProjector.cpp`; this computes elevation relative to the calibrated base plane.
 - **Coordinate mapping:** Kinect-to-projector mapping is done with `KinectProjector::kinectCoordToProjCoord(...)` in `src/KinectProjector/KinectProjector.h/.cpp`.
 - **Insertion points for new mode:** Added `CTreasureSweeperController` setup/update/draw/key integration in `src/ofApp.h` and `src/ofApp.cpp`, with implementation in `src/Games/TreasureSweeperController.h/.cpp`.
+- **Cheat/debug reveal toggle:** Added `Y` key handling inside `CTreasureSweeperController::keyPressed()` to reveal treasure and mines overlay while in Treasure Sweeper mode.
+

@@ -97,6 +97,7 @@ private:
 	std::map<int, std::string> resultByCell;
 	float adaptiveDropThreshold;
 	bool revealMines;
+	bool cheatRevealAll;
 };
 
 #endif
